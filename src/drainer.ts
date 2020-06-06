@@ -1,9 +1,9 @@
-import * as amqplib from "amqplib";
-import { Spinner } from "cli-spinner";
-import chalk from "chalk";
-import emoji from "node-emoji";
-import { Message } from "amqplib";
-import { ConnectionHelper } from "./connectionHelper";
+import * as amqplib from 'amqplib';
+import { Spinner } from 'cli-spinner';
+import chalk from 'chalk';
+import emoji from 'node-emoji';
+import { Message } from 'amqplib';
+import { ConnectionHelper } from './connectionHelper';
 
 /**
  * The queue drainer that connects to an AMQ queue and consumes all the messages.
@@ -34,13 +34,13 @@ export class Drainer {
     this.logMessage = logMessage;
     this.logMessageCsv = logMessageCsv;
     this.i18n = i18n;
-    this.spinner = new Spinner("waiting.. %s ");
+    this.spinner = new Spinner('waiting.. %s ');
   }
 
   /**
    * connect and consume messages
    */
-  public async consumeMessages() {
+  public async consumeMessages(): Promise<any> {
     return this.setupAndProcess(
       (
         channel: amqplib.Channel,
@@ -61,10 +61,10 @@ export class Drainer {
             }
           })
           .catch((error: any) => {
-            console.error("error when consuming a message", error);
+            console.error('error when consuming a message', error);
           });
       }
-    ).catch((err) => console.error("oh oh", err));
+    ).catch((err) => console.error('oh oh', err));
   }
 
   /**
@@ -101,7 +101,7 @@ export class Drainer {
             });
           })
           .catch((error: any) => {
-            console.error("error when consuming a message", error);
+            console.error('error when consuming a message', error);
           });
       }
     );
@@ -121,7 +121,7 @@ export class Drainer {
           console.info(
             ` [*] Waiting for messages in ${chalk.bold.red(
               this.queue
-            )}. ${chalk.inverse.greenBright("CTRL-C")} to exit`
+            )}. ${chalk.inverse.greenBright('CTRL-C')} to exit`
           );
           this.spinner.start();
           const logMessage = this.logMessage;
@@ -130,11 +130,11 @@ export class Drainer {
           return processFn(channel, logMessageCsv, logMessage);
         }
       } catch (err) {
-        console.error(`${this.i18n.__("connect.error.msg.queue")}`, err);
+        console.error(`${this.i18n.__('connect.error.msg.queue')}`, err);
       }
     } catch (error) {
       console.error(
-        `${this.i18n.__("connect.error.msg.server")}`,
+        `${this.i18n.__('connect.error.msg.server')}`,
         error.message
       );
     }
@@ -150,16 +150,16 @@ export class Drainer {
       // add header when first entry
       if (count === 1) {
         console.debug(
-          "----8<---------8<---------8<--------8<---------8<--------8<----------"
+          '----8<---------8<---------8<--------8<---------8<--------8<----------'
         );
-        console.debug(`${this.i18n.__("log.csv.header")}`);
+        console.debug(`${this.i18n.__('log.csv.header')}`);
       }
       console.debug(`${count},"${message.content.toString()}"`);
     } else {
       if (logMessage) {
         console.debug(message.content.toString());
       }
-      console.info(`message: ${count} ${emoji.get("white_check_mark")}`);
+      console.info(`message: ${count} ${emoji.get('white_check_mark')}`);
     }
   }
 }

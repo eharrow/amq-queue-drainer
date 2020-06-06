@@ -1,7 +1,7 @@
-import * as amqplib from "amqplib";
-import chalk from "chalk";
-import prompt from "prompts";
-import { ConnectionHelper } from "./connectionHelper";
+import * as amqplib from 'amqplib';
+import chalk from 'chalk';
+import prompt from 'prompts';
+import { ConnectionHelper } from './connectionHelper';
 
 /**
  * The queue drainer that connects to an AMQ queue and consumes all the messages.
@@ -50,21 +50,21 @@ export class Filler {
       };
       const response: any = await prompt(
         {
-          type: "text",
-          name: "value",
-          message: "Message to publish?",
+          type: 'text',
+          name: 'value',
+          message: 'Message to publish?',
           validate: (value) =>
             value.length === 0 ? `You need to enter something` : true,
         },
         { onCancel }
       );
 
-      const buf: Buffer = Buffer.from(response.value, "utf8");
+      const buf: Buffer = Buffer.from(response.value, 'utf8');
       Promise.resolve(channel.publish(this.exchange(), this.routingKey(), buf));
     }
   }
   private exchange(): string {
-    return "";
+    return '';
   }
 
   private routingKey(): string {
@@ -85,22 +85,22 @@ export class Filler {
           console.info(
             ` [*] Waiting for messages to send to ${chalk.bold.red(
               this.queue
-            )}. ${chalk.inverse.greenBright("CTRL-C")} to exit`
+            )}. ${chalk.inverse.greenBright('CTRL-C')} to exit`
           );
           return Promise.resolve(channel);
         } else {
-          return Promise.reject("no channel");
+          return Promise.reject('no channel');
         }
       } catch (err) {
-        console.error(`${this.i18n.__("connect.error.msg.queue")}`, err);
-        return Promise.reject("no channel");
+        console.error(`${this.i18n.__('connect.error.msg.queue')}`, err);
+        return Promise.reject('no channel');
       }
     } catch (error) {
       console.error(
-        `${this.i18n.__("connect.error.msg.server")}`,
+        `${this.i18n.__('connect.error.msg.server')}`,
         error.message
       );
-      return Promise.reject("no channel");
+      return Promise.reject('no channel');
     }
   }
 }
